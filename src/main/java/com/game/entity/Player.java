@@ -1,23 +1,48 @@
 package com.game.entity;
 
+import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
+
 import java.util.Date;
 
-
+@NamedQueries({
+        @NamedQuery(
+                name = "getAllCountPlayers",
+                query = "select count(pl) FROM Player pl"
+        )
+})
+@Entity
+@Table(schema = "rpg", name = "player")
 public class Player {
+    //TODO Нету понимания как объяснить киберу что бы он сказал безе что последний ID 40, а не 1.
+    // в ручную это понятно.
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name", length = 12, nullable = false)
     private String name;
 
+    @Column(name = "title", length = 30, nullable = false)
     private String title;
 
+    @Column(name = "race", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
     private Race race;
 
+    @Column(name = "profession", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
     private Profession profession;
 
+    @Column(name = "birthday", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date birthday;
 
+    @Column(name = "banned", nullable = false)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean banned;
 
+    @Column(name = "level", nullable = false)
     private Integer level;
 
     public Player() {
